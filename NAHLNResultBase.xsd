@@ -1,0 +1,2261 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ******* Version 1_0_9_1 of the NAHLN Base Result Schema ******* -->
+<!--
+This is the basic schema for all NAHLN laboratory results messages.  
+It includes all fields that we anticipate needing in any of the disease 
+program or surveillance testing.  It requires only the minimum needed 
+for all types of testing.	
+-->
+
+ <!-- 10/06/2010 - 1_0_9_0 Changes include:
+ Various backward compatible changes found in developing SIV message examples.
+ Relaxed a number of constraints.  
+ May expand enumeration of Reason for Testing (TBD) 
+  
+ 4/26/2013 1_0_9_1 Removed incorrect length restrictions.
+-->
+<xsd:schema xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:hl7="urn:hl7-org:v2xml">
+	<xsd:simpleType name="OID">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="(\s)*(([1-9][0-9]*)|(0))(\.(([1-9][0-9]*)|(0)))+(\s)*"></xsd:pattern>
+			<!--<xsd:pattern value="(\s)*([1-9][0-9]*)(\.([1-9][0-9]*))+(\s)*"></xsd:pattern>--> <!-- ** Updated by SLINKE on 8/24/2010 to comply with CSF ELISA OID ** -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="AREACODE">
+		<!-- 11/30/2007 Slinke Added Expression to validate Area Code -->
+		<xsd:restriction base="xsd:int">
+			<xsd:pattern value="[2-9]{1}\d{2}"></xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="PHONENUMBER">
+		<!-- 11/30/2007 Slinke Added Expression to validate Phone Num -->
+		<xsd:restriction base="xsd:int">
+			<xsd:pattern value="\d{7}"></xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="EXTENSION">
+		<!-- 11/30/2007 Slinke Added Expression to validate Extension -->
+		<xsd:restriction base="xsd:int">
+			<xsd:pattern value="\d{1,5}"></xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="ISO">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="ISO"></xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="LN">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="LN"></xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="DateTime">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="(\d{4}(((0[1-9])|(1[0-2]))(((0[1-9])|([1-2]\d)|(3[0-1]))((([01]\d|2[0-3])([0-5]\d))(([0-5]\d)((\.\d{1,4}))?)?)?)?)?([+\-](([0]\d|1[0-3])([0-5]\d)))?)?"></xsd:pattern>
+			<xsd:minLength value="1"></xsd:minLength>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="CondDateTime">
+		<xsd:restriction base="xsd:string">
+			<xsd:pattern value="(\d{4}(((0[1-9])|(1[0-2]))(((0[1-9])|([1-2]\d)|(3[0-1]))((([01]\d|2[0-3])([0-5]\d))(([0-5]\d)((\.\d{1,4}))?)?)?)?)?([+\-](([0]\d|1[0-3])([0-5]\d)))?)?"></xsd:pattern>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="StateCode">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="AK"/>
+			<xsd:enumeration value="AL"/>
+			<xsd:enumeration value="AR"/>
+			<xsd:enumeration value="AS"/>
+			<xsd:enumeration value="AZ"/>
+			<xsd:enumeration value="CA"/>
+			<xsd:enumeration value="CO"/>
+			<xsd:enumeration value="CT"/>
+			<xsd:enumeration value="DC"/>
+			<xsd:enumeration value="DE"/>
+			<xsd:enumeration value="FL"/>
+			<xsd:enumeration value="FM"/>
+			<xsd:enumeration value="GA"/>
+			<xsd:enumeration value="GB"/>
+			<xsd:enumeration value="GU"/>
+			<xsd:enumeration value="HI"/>
+			<xsd:enumeration value="IA"/>
+			<xsd:enumeration value="ID"/>
+			<xsd:enumeration value="IL"/>
+			<xsd:enumeration value="IN"/>
+			<xsd:enumeration value="KS"/>
+			<xsd:enumeration value="KY"/>
+			<xsd:enumeration value="LA"/>
+			<xsd:enumeration value="MA"/>
+			<xsd:enumeration value="MD"/>
+			<xsd:enumeration value="ME"/>
+			<xsd:enumeration value="MH"/>
+			<xsd:enumeration value="MI"/>
+			<xsd:enumeration value="MN"/>
+			<xsd:enumeration value="MO"/>
+			<xsd:enumeration value="MP"/>
+			<xsd:enumeration value="MS"/>
+			<xsd:enumeration value="MT"/>
+			<xsd:enumeration value="NC"/>
+			<xsd:enumeration value="ND"/>
+			<xsd:enumeration value="NE"/>
+			<xsd:enumeration value="NH"/>
+			<xsd:enumeration value="NJ"/>
+			<xsd:enumeration value="NM"/>
+			<xsd:enumeration value="NV"/>
+			<xsd:enumeration value="NY"/>
+			<xsd:enumeration value="OH"/>
+			<xsd:enumeration value="OK"/>
+			<xsd:enumeration value="OR"/>
+			<xsd:enumeration value="PA"/>
+			<xsd:enumeration value="PR"/>
+			<xsd:enumeration value="PW"/>
+			<xsd:enumeration value="PZ"/>
+			<xsd:enumeration value="RI"/>
+			<xsd:enumeration value="SC"/>
+			<xsd:enumeration value="SD"/>
+			<xsd:enumeration value="TN"/>
+			<xsd:enumeration value="TX"/>
+			<xsd:enumeration value="UM"/>
+			<xsd:enumeration value="UT"/>
+			<xsd:enumeration value="VA"/>
+			<xsd:enumeration value="VI"/>
+			<xsd:enumeration value="VT"/>
+			<xsd:enumeration value="WA"/>
+			<xsd:enumeration value="WI"/>
+			<xsd:enumeration value="WK"/>
+			<xsd:enumeration value="WV"/>
+			<xsd:enumeration value="WY"/>
+			<xsd:enumeration value="ZK"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="YN">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="Y"/>
+			<xsd:enumeration value="N"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="IDType">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="ANON"/>
+			<!-- Anonymous identifier -->
+			<xsd:enumeration value="B"/>
+			<!-- Band -->
+			<xsd:enumeration value="BL"/>
+			<!-- Band, Leg  -->
+			<xsd:enumeration value="BR"/>
+			<!-- Birth registry number -->
+			<xsd:enumeration value="BRD"/>
+			<!-- Brand -->
+			<xsd:enumeration value="BRF"/>
+			<!-- Brand, Freeze  -->
+			<xsd:enumeration value="BRH"/>
+			<!-- Brand, Hot Iron  -->
+			<xsd:enumeration value="BRN"/>
+			<!-- Breed Registry Number -->
+			<xsd:enumeration value="CSID"/>
+			<!-- Collection Site Identification number -->
+			<xsd:enumeration value="FI"/>
+			<!-- Facility ID -->
+			<xsd:enumeration value="GI"/>
+			<!-- Guarantor internal identifier -->
+			<xsd:enumeration value="GN"/>
+			<!-- Guarantor external  identifier -->
+			<xsd:enumeration value="GRID"/>
+			<!-- Group Identifier -->
+			<xsd:enumeration value="LR"/>
+			<!-- Local Registry ID -->
+			<xsd:enumeration value="MCN"/>
+			<!-- Microchip Number -->
+			<xsd:enumeration value="MR"/>
+			<!-- Medical record number -->
+			<xsd:enumeration value="MRT"/>
+			<!-- Temporary Medical Record Number -->
+			<xsd:enumeration value="N"/>
+			<!-- Notch -->
+			<xsd:enumeration value="NCHN"/>
+			<!-- Neck Chain Identifier -->
+			<xsd:enumeration value="NE"/>
+			<!-- Notch, Ear  -->
+			<xsd:enumeration value="NF"/>
+			<!-- Notch, Fin  -->
+			<xsd:enumeration value="PE"/>
+			<!-- Living Subject Enterprise Number -->
+			<xsd:enumeration value="PNT"/>
+			<!-- Temporary Living Subject Number -->
+			<xsd:enumeration value="PT"/>
+			<!-- Patient external identifier -->
+			<xsd:enumeration value="QA"/>
+			<!-- QA number -->
+			<xsd:enumeration value="RRI"/>
+			<!-- Regional Registry Number -->
+			<xsd:enumeration value="SR"/>
+			<!-- State Registry Number -->
+			<xsd:enumeration value="TAG"/>
+			<!-- Tag -->
+			<xsd:enumeration value="TAGB"/>
+			<!-- Tag, Back -->
+			<xsd:enumeration value="TAGC"/>
+			<!-- Tag, FSIS Condemnation  -->
+			<xsd:enumeration value="TAGE"/>
+			<!-- Tag, Ear -->
+			<xsd:enumeration value="TAGF"/>
+			<!-- Tag, Fin  -->
+			<xsd:enumeration value="TAGN"/>
+			<!-- Tag, Neck  -->
+			<xsd:enumeration value="TAGOB "/>
+			<!-- Tag, Official USDA Bangle  -->
+			<xsd:enumeration value="TAGOE"/>
+			<!-- Tag, Owner Ear -->
+			<xsd:enumeration value="TAGOS"/>
+			<!-- Tag, Official USDA Silver  -->
+			<xsd:enumeration value="TAGOV"/>
+			<!-- Tag, Official USDA Vaccination  -->
+			<xsd:enumeration value="TAGT"/>
+			<!-- Tag, Tail -->
+			<xsd:enumeration value="TAGW"/>
+			<!-- Tag, Wing  -->
+			<xsd:enumeration value="TAT"/>
+			<!-- Tattoo -->
+			<xsd:enumeration value="TATB"/>
+			<!-- Tattoo, Body  -->
+			<xsd:enumeration value="TATE"/>
+			<!-- Tattoo, Ear  -->
+			<xsd:enumeration value="TATL"/>
+			<!-- Tattoo, Lip  -->
+			<xsd:enumeration value="U"/>
+			<!-- Unspecified identifier -->
+			<xsd:enumeration value="USAIN"/>
+			<!-- United Stated Animal Identification Number -->
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="SCT">
+		<!-- Snomed Coding System -->
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="SCT"/>
+			<xsd:minLength value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="SCTor371">
+		<!-- Snomed Coding System or HL7 Table of Additives -->
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="SCT"/>
+			<xsd:enumeration value="HL70371"/>
+			<xsd:minLength value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="Local">
+		<xsd:restriction base="xsd:string">
+			<xsd:enumeration value="L"/>
+			<xsd:minLength value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:simpleType name="nonNullString">
+		<xsd:restriction base="xsd:string">
+			<xsd:minLength value="1"/>
+		</xsd:restriction>
+	</xsd:simpleType>
+	<xsd:element name="OPU_R25">
+		<xsd:complexType>
+			<xsd:sequence>
+				<!-- Header consists of MSH for Routing and PV1 for Accession Number -->
+				<xsd:element ref="MSH"/>
+				<xsd:element ref="PV1"/>
+				<!-- One instance was used for listing the reason for testing.  This is now
+					 to be sent in OBR.31.  -->
+				<xsd:element name="OBX" type="VISIT.OBX" minOccurs="0" nillable="true" maxOccurs="unbounded"/>
+				<!-- And one or more roles for Submitter plus, depending on program, collector, premises, etc. -->
+				<!-- Most but not all testing programs require a SUB instance. -->
+				<xsd:element ref="ROL" minOccurs="0" maxOccurs="unbounded"/>
+
+				<!-- Followed by one or more animal or pool groups (Accession details) -->
+				<xsd:element ref="OPU_R25.ACCESSION_DETAIL" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- The MSH segment is almost all either NAHLN or Lab Constants 
+		Insert date/time of message and message control id at run time.
+	 -->
+	<xsd:element name="MSH">
+		<xsd:complexType>
+			<xsd:sequence>
+				<!-- NAHLN Constant | -->
+				<xsd:element name="MSH.1" minOccurs="1">
+					<xsd:simpleType>
+						<xsd:restriction base="nonNullString">
+							<xsd:enumeration value="|"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:element>
+				<!-- NAHLN Constant ^~\&amp; -->
+				<xsd:element name="MSH.2" minOccurs="1">
+					<xsd:simpleType>
+						<!--4/30/2008 Slinke.  Removed enum value due to rhapsody bug-->
+						<xsd:restriction base="nonNullString"/>
+					</xsd:simpleType>
+				</xsd:element>
+				<!-- Sending application -->
+				<xsd:element name="MSH.3" minOccurs="0" nillable="true">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- Lab Constant Application Abbrev -->
+							<xsd:element name="HD.1" type="nonNullString"/>
+							<!-- Lab Constant Application Names OID -->
+							<xsd:element name="HD.2" type="OID"/>
+							<!-- NAHLN Constant ISO -->
+							<xsd:element name="HD.3" type="ISO"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Sending facility -->
+				<xsd:element name="MSH.4">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- Lab Constant Lab PremID or Non-producer participant ID -->
+							<xsd:element name="HD.1" type="nonNullString"/>
+							<!-- Lab Constant 2.16.840.1.113883.3.5.6.1.[1 or 4] (PIN or NPPN) -->
+							<!-- 04/29/2008 Slinke. Changed from type OID to enumerated list. -->
+							<xsd:element name="HD.2">
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<!--PIN OID-->
+										<xsd:enumeration value="2.16.840.1.113883.3.5.6.1.1"/>
+										<!-- NPPN OID -->
+										<xsd:enumeration value="2.16.840.1.113883.3.5.6.1.4"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>	
+							<!-- NAHLN Constant ISO -->
+							<xsd:element name="HD.3" type="ISO"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Receiving application -->
+				<xsd:element name="MSH.5" minOccurs="0" nillable="true">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- NAHLN Application Abbrev -->
+							<xsd:element name="HD.1" type="nonNullString"/>
+							<!-- Lab OID or Lab NAHLN Applications OID -->
+							<xsd:element name="HD.2" type="OID"/>
+							<!-- NAHLN Constant ISO -->
+							<xsd:element name="HD.3" type="ISO"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Receiving facility -->
+				<xsd:element name="MSH.6" minOccurs="0" nillable="true">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- NAHLN Constant 0034P2K -->
+							<xsd:element name="HD.1" type="nonNullString"/>
+							<!-- NAHLN Constant 2.16.840.1.113883.3.5.6.1.4 -->
+							<xsd:element name="HD.2" type="OID"/>
+							<!-- NAHLN Constant ISO -->
+							<xsd:element name="HD.3" type="ISO"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Insert date/time of message as YYYYMMDDHHMMSS-ZZZZ -->
+				<xsd:element name="MSH.7" type="DateTime" minOccurs="1"/>
+				<!-- HL7 Message type -->
+				<xsd:element name="MSH.9" minOccurs="1">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- NAHLN Constant OPU -->
+							<xsd:element name="MSG.1" minOccurs="1">
+								<xsd:simpleType>
+									<xsd:restriction base="nonNullString">
+										<xsd:enumeration value="OPU"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<!-- NAHLN Constant R25 -->
+							<xsd:element name="MSG.2" minOccurs="1">
+								<xsd:simpleType>
+									<xsd:restriction base="nonNullString">
+										<xsd:enumeration value="R25"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<!-- NAHLN Constant OPU_R25  -->
+							<xsd:element name="MSG.3" minOccurs="1">
+								<xsd:simpleType>
+									<xsd:restriction base="nonNullString">
+										<xsd:enumeration value="OPU_R25"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Insert lab identifier for message used to match up errors, etc.  -->
+				<xsd:element name="MSH.10" type="nonNullString"/>
+				<!-- Processing ID -->
+				<xsd:element name="MSH.11">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- NAHLN Constant P, Production or D, Debugging or T, Training -->
+							<xsd:element name="PT.1">
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:enumeration value="P"/>
+										<!-- Production -->
+										<xsd:enumeration value="D"/>
+										<!-- Debugging -->
+										<xsd:enumeration value="T"/>
+										<!-- Training -->
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Version ID -->
+				<xsd:element name="MSH.12">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- NAHLN Constant 2.6 -->
+							<xsd:element name="VID.1" type="nonNullString"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Message profile -->
+				<xsd:element name="MSH.21" minOccurs="1">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- NAHLN Profile ID -->
+							<xsd:element name="EI.1" minOccurs="1" nillable="false" type="nonNullString"/>
+							<!-- NAHLN Constant OID for NAHLN Profile IDs 2.16.840.1.113883.3.5.9 -->
+							<xsd:element name="EI.3" type="OID" minOccurs="0"/>
+							<!-- NAHLN Constant ISO -->
+							<xsd:element name="EI.4" type="ISO" minOccurs="0"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- END MSH -->
+
+	<!-- PV1 Holds Accession number and other information we are not using -->
+	<xsd:element name="PV1">
+		<xsd:complexType>
+			<xsd:sequence>
+				<!-- NAHLN Constant "C" Not used here but required for HL7 compliance-->
+				<xsd:element name="PV1.2">
+					<xsd:simpleType>
+						<xsd:restriction base="nonNullString">
+							<xsd:enumeration value="C"/>
+						</xsd:restriction>
+					</xsd:simpleType>
+				</xsd:element>
+				<!-- Attending doctor is Responsible Diagnostician for NAHLN messages -->
+				<xsd:element name="PV1.7" minOccurs="0" nillable="true">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- Lab's identifier for the diagnostician -->
+							<xsd:element name="XCN.1" type="xsd:string" minOccurs="0" nillable="true"/>
+							<xsd:element name="XCN.2">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Last name of diagnostician -->
+										<xsd:element name="FN.1" type="nonNullString"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<!-- First Name of diagnostician -->
+							<xsd:element name="XCN.3" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Middle Name of diagnostician -->
+							<xsd:element name="XCN.4" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Name suffix (sr. jr. etc.) of diagnostician -->
+							<xsd:element name="XCN.5" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!--Assigning authority of ID in XCN.1 -->
+							<xsd:element name="XCN.9" minOccurs="0" nillable="true">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Lab's OID or OID of Lab's Diagnostician number system -->
+										<xsd:element name="HD.2" type="OID"/>
+										<!-- NAHLN Constant "ISO" -->
+										<xsd:element name="HD.3" type="ISO"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Accession number -->
+				<xsd:element name="PV1.19">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- Insert Accession Number -->
+							<xsd:element name="CX.1" type="xsd:string"/>
+							<xsd:element name="CX.4">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Lab constant Lab OID or Lab's OID for Accession number -->
+										<xsd:element name="HD.2" type="OID"/>
+										<!-- NAHLN Constant "ISO" -->
+										<xsd:element name="HD.3" type="ISO"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- NAHLN Constant "V" not used here but required for HL7 compliance
+				     This was WRONG.  Not required.   Should not be sent! -->
+				<xsd:element name="PV1.51" type="xsd:string" minOccurs="0"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- END PV1  -->
+
+	<!-- Observation about the accession itself.  The reason for testing ("visit" in HL7 terms.) -->
+	<xsd:complexType name="VISIT.OBX">
+		<xsd:sequence>
+			<!-- NAHLN Constant "CWE" -->
+			<xsd:element name="OBX.2" type="nonNullString"/>
+			<xsd:element name="OBX.3">
+				<xsd:complexType>
+					<xsd:sequence>
+						<!-- NAHLN Constant "29298-7" -->
+						<!-- For future use, additional observations on the visit may be allowed
+							in which case, OBX.3 will vary.  The first instance must always be 
+							reason for visit. -->
+						<xsd:element name="CWE.1" type="nonNullString"/>
+						<!-- NAHLN Constant "Reason for Visit" -->
+						<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- NAHLN Constant "LN" -->
+						<xsd:element name="CWE.3" type="LN"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<xsd:element name="OBX.5">
+				<xsd:complexType>
+					<xsd:sequence>
+						<!-- In normal usage CWE.1 - CWE.3 will be used and the rest not used
+							the optionality is retained for future use and for unusual cases where
+							the reson for visit is not anticipated by NAHLN codes. 
+						       This could need to be redefined as one of our ANY fields depending on future 
+						               uses of observation on the visit -->
+						<!-- Result NAHLN code for reason for visit: S Surveillance, D Diagnostic, etc. -->
+						<xsd:element name="CWE.1" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- Result Text: "Surveillance, etc." -->
+						<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- NAHLN Constant "L" -->
+						<xsd:element name="CWE.3" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- Local code for reason for visit: S Surveillance, D Diagnostic, etc. -->
+						<xsd:element name="CWE.4" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- Local Result Text: "Surveillance, etc." -->
+						<xsd:element name="CWE.5" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- NAHLN Constant "L" -->
+						<xsd:element name="CWE.6" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- Original text of reason for visit -->
+						<xsd:element name="CWE.9" type="xsd:string" minOccurs="0" nillable="true"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<!-- NAHLN Constant "F" Only final results messaged -->
+			<xsd:element name="OBX.11">
+				<xsd:simpleType>
+					<xsd:restriction base="nonNullString">
+						<xsd:enumeration value="F"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<!-- Roles used for Submitter, Collector, Premises, etc. -->
+	<xsd:element name="ROL">
+		<xsd:complexType>
+			<xsd:sequence>
+				<!-- Role instance ID.  Identifier qualifying this person to participate in this role. -->
+				<xsd:element name="ROL.1" minOccurs="0" nillable="true">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- Identifier, participant number, etc. -->
+							<xsd:element name="EI.1" type="nonNullString" minOccurs="1" nillable="false"/>
+							<!-- OID of identifier system such as collection program -->
+							<xsd:element name="EI.3" type="OID" minOccurs="1" nillable="false"/>
+							<!-- NAHLN Constant "ISO" -->
+							<xsd:element name="EI.4" type="ISO" minOccurs="1" nillable="false"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Action code.  NAHLN Constant "UC" for unchanged.  Do not assign roles here, simple report existing ones. -->
+				<xsd:element name="ROL.2" type="nonNullString"/>
+				<!-- Role -->
+				<xsd:element name="ROL.3">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- NAHLN code for Role "SUB", "COL", "PREM", etc. -->
+							<xsd:element name="CWE.1">
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:enumeration value="SUB"/>
+										<!-- Submitter -->
+										<xsd:enumeration value="COL"/>
+										<!-- Collector -->
+										<xsd:enumeration value="PREM"/>
+										<!-- Source Premises -->
+										<xsd:enumeration value="AT"/>
+										<!-- Attending Veterinarian -->
+										<xsd:enumeration value="PAR"/>
+										<!-- Parent Company -->
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<!-- Spelled out role "Submitting Party", "Specimen Collector", "Source Premises", etc. -->
+							<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- NAHLN "HL70443" or "L" Local code -->
+							<xsd:element name="CWE.3" type="nonNullString"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Role Person.  Who is the submitter, collector, etc.  Doesn't make sense for Premises but required placeholder -->
+				<xsd:element name="ROL.4" minOccurs="1">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- Person identifier -->
+							<xsd:element name="XCN.1" type="xsd:string" minOccurs="0"/>
+							<xsd:element name="XCN.2">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Last Name ("Not Applicable" ("NA") for Premises) -->
+										<xsd:element name="FN.1" type="nonNullString"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<!-- First Name -->
+							<xsd:element name="XCN.3" type="xsd:string" minOccurs="0"/>
+							<!-- Middle Name -->
+							<xsd:element name="XCN.4" type="xsd:string" minOccurs="0"/>
+							<!-- Name Suffix -->
+							<xsd:element name="XCN.5" type="xsd:string" minOccurs="0"/>
+							<!-- Assigning Authority -->
+							<xsd:element name="XCN.9" minOccurs="0" nillable="true">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- OID of assigner of ID in XCN.1 -->
+										<xsd:element name="HD.2" type="OID"/>
+										<!-- NAHLN Constant "ISO" -->
+										<xsd:element name="HD.3" type="ISO"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Address: Note: this is a very loose constraint on XAD to allow
+				     sending of just State or just Other Designation, etc. -->
+				<xsd:element name="ROL.11" minOccurs="0" nillable="true">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="XAD.1" minOccurs="0">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Street Address -->
+										<xsd:element name="SAD.1" type="nonNullString"/>
+										<!-- Apartment number -->
+										<xsd:element name="SAD.3" type="xsd:string" minOccurs="0" nillable="true"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<!-- Other designation -->
+							<xsd:element name="XAD.2" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- City -->
+							<xsd:element name="XAD.3" type="nonNullString" minOccurs="0"/>
+							<!-- State (Two character abbreviation) -->
+							<xsd:element name="XAD.4" type="StateCode"  minOccurs="0"/>
+							<!-- Zipcode -->
+							<xsd:element name="XAD.5" type="nonNullString" minOccurs="0"/>
+							<!-- Other designation such as Lat Long (in ROL, use PL.10 for PINs -->
+							<xsd:element name="XAD.8" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- County -->
+							<xsd:element name="XAD.9" type="xsd:string" minOccurs="0" nillable="true"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Phone -->
+				<xsd:element name="ROL.12" minOccurs="0" nillable="true" maxOccurs="unbounded">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- Use code: WPN, PRN, EMR, NET, etc. -->
+							<xsd:element name="XTN.2">
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:enumeration value="ASN"/>
+										<!-- Answering Service Number -->
+										<xsd:enumeration value="BPN"/>
+										<!-- Beeper Number -->
+										<xsd:enumeration value="EMR"/>
+										<!-- Emergency Number -->
+										<xsd:enumeration value="NET"/>
+										<!-- Network (email) Address -->
+										<xsd:enumeration value="ORN"/>
+										<!-- Other Residence Number -->
+										<xsd:enumeration value="PRN"/>
+										<!-- Primary Residence Number -->
+										<xsd:enumeration value="VHN"/>
+										<!-- Vacation Home Number -->
+										<xsd:enumeration value="WPN"/>
+										<!-- Work Number -->
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<!-- Equipment type: PH Phone, FX Fax, Internet Email -->
+							<xsd:element name="XTN.3">
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:enumeration value="BP"/>
+										<!-- Beeper -->
+										<xsd:enumeration value="CP"/>
+										<!-- Cellular Phone -->
+										<xsd:enumeration value="FX"/>
+										<!-- Fax -->
+										<xsd:enumeration value="Internet"/>
+										<!-- Internet Address, use only when XTN.2 is NET -->
+										<xsd:enumeration value="MD"/>
+										<!-- Modem -->
+										<xsd:enumeration value="PH"/>
+										<!-- Telephone -->
+										<xsd:enumeration value="TDD"/>
+										<!-- Telecommunications Device for the Deaf -->
+										<xsd:enumeration value="TTY"/>
+										<!-- Teletypewriter -->
+										<xsd:enumeration value="X.400"/>
+										<!-- X.400 email address, use only when XTN.2 is NET -->
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<!-- Email address -->
+							<xsd:element name="XTN.4" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Area code -->
+							<xsd:element name="XTN.6" type="AREACODE" minOccurs="0" nillable="true"/>
+							<!-- Local number -->
+							<xsd:element name="XTN.7" type="PHONENUMBER" minOccurs="0" nillable="true"/>
+							<!-- Extension -->
+							<xsd:element name="XTN.8" type="EXTENSION" minOccurs="0" nillable="true"/>
+							<!-- Unformatted number if not parsable -->
+							<xsd:element name="XTN.12" type="xsd:string" minOccurs="0" nillable="true"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Person location Used for premises ID -->
+				<xsd:element name="ROL.13" minOccurs="0" nillable="true">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- Location Type "P" (User defined table definition for Production Unit, See 
+								implementation guide for additional values.) -->
+							<xsd:element name="PL.6" minOccurs="0" nillable="true">
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:enumeration value="C"/>
+										<!-- Clinic -->
+										<xsd:enumeration value="E"/>
+										<!-- Exhibition -->
+										<xsd:enumeration value="L"/>
+										<!-- Laboratory -->
+										<xsd:enumeration value="M"/>
+										<!-- Market/Collection Point -->
+										<xsd:enumeration value="P"/>
+										<!-- Production Unit -->
+										<xsd:enumeration value="B"/>
+										<!-- Port of Entry -->
+										<xsd:enumeration value="Q"/>
+										<!-- Quarantine Facility -->
+										<xsd:enumeration value="S"/>
+										<!-- Slaughter Plant -->
+										<xsd:enumeration value="T"/>
+										<!-- Tagging Site -->
+										<xsd:enumeration value="R"/>
+										<!-- Rendering -->
+										<xsd:enumeration value="N"/>
+										<!-- Non-producer Participant -->
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<!-- Location Description -->
+							<xsd:element name="PL.9" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Location Identifier -->
+							<xsd:element name="PL.10" minOccurs="0" nillable="true">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Premises ID -->
+										<xsd:element name="EI.1" type="nonNullString"/>
+										<!-- NAHLN Constant PremID OID 2.16.840.1.113883.3.5.6.1.1-->
+										<xsd:element name="EI.3" type="OID"/>
+										<!-- NAHLN Constant "ISO" -->
+										<xsd:element name="EI.4" type="ISO"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<!-- Accession Detail Repeats for each animal or pool. -->
+	<xsd:element name="OPU_R25.ACCESSION_DETAIL">
+		<xsd:complexType>
+			<xsd:sequence>
+				<!-- NK1 Represents the "Owner" who is the person most responsible for the animals or location being tested -->
+				<xsd:element ref="NK1"/>
+				<xsd:element ref="OPU_R25.PATIENT" minOccurs="0"/>
+				<!-- set to nillable="true" in element definition below.-->
+				<xsd:element ref="OPU_R25.SPECIMEN" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- END OPU_R25.ACCESSION_DETAIL -->
+
+	<!-- Next of Kin: Owner -->
+	<xsd:element name="NK1">
+		<xsd:complexType>
+			<xsd:sequence>
+				<!-- Sequence ID: NAHLN Constant "1" -->
+				<xsd:element name="NK1.1" type="xsd:int"/>
+				<!-- Owner Name -->
+				<xsd:element name="NK1.2" minOccurs="0" nillable="true">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="XPN.1">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Last name: "Not Provided" as default if not provided or known -->
+										<xsd:element name="FN.1" type="nonNullString"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<!-- First Name -->
+							<xsd:element name="XPN.2" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Middle Name -->
+							<xsd:element name="XPN.3" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Name Suffix -->
+							<xsd:element name="XPN.4" type="xsd:string" minOccurs="0" nillable="true"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Relationship -->
+				<xsd:element name="NK1.3" minOccurs="0">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- NAHLN default "OWN" -->
+							<xsd:element name="CWE.1">
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:enumeration value="ASC"/>
+										<!-- Associate -->
+										<xsd:enumeration value="EMC"/>
+										<!-- Emergency Contact -->
+										<xsd:enumeration value="GRD"/>
+										<!-- Guardian -->
+										<xsd:enumeration value="MGR"/>
+										<!-- Manager -->
+										<xsd:enumeration value="OWN"/>
+										<!-- Owner -->
+										<xsd:enumeration value="TRA"/>
+										<!-- Trainer -->
+										<xsd:enumeration value="UNK"/>
+										<!-- Unknown -->
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<!-- NAHLN default "Owner" -->
+							<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- NAHLN Constant "HL70063" -->
+							<xsd:element name="CWE.3" type="nonNullString"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Owner Address -->
+				<xsd:element name="NK1.4" minOccurs="0" nillable="true">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="XAD.1">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Street Address -->
+										<xsd:element name="SAD.1" type="nonNullString" minOccurs="1" nillable="false"/>
+										<!-- Apartment number -->
+										<xsd:element name="SAD.3" type="xsd:string" minOccurs="0" nillable="true"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<!-- Other designation Address Line 2 -->
+							<xsd:element name="XAD.2" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- City -->
+							<xsd:element name="XAD.3" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- State (Two character abbreviation) -->
+							<xsd:element name="XAD.4" type="StateCode" minOccurs="0" nillable="true"/>
+							<!-- Zipcode -->
+							<xsd:element name="XAD.5" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Other Designation including Lat Long or PIN/LID -->
+							<xsd:element name="XAD.8" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- County -->
+							<xsd:element name="XAD.9" type="xsd:string" minOccurs="0" nillable="true"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Owner home phone(s) -->
+				<xsd:element name="NK1.5" minOccurs="0" nillable="true" maxOccurs="unbounded">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- Use code: PRN -->
+							<xsd:element name="XTN.2" type="nonNullString"/>
+							<!-- Equipment type: PH Phone, -->
+							<xsd:element name="XTN.3" type="nonNullString"/>
+							<!-- Email address -->
+							<xsd:element name="XTN.4" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Area code -->
+							<xsd:element name="XTN.6" type="xsd:int" minOccurs="0" nillable="true"/>
+							<!-- Local number -->
+							<xsd:element name="XTN.7" type="xsd:int" minOccurs="0" nillable="true"/>
+							<!-- Extension -->
+							<xsd:element name="XTN.8" type="xsd:int" minOccurs="0" nillable="true"/>
+							<!-- Unformatted number if not parsable -->
+							<xsd:element name="XTN.12" type="xsd:string" minOccurs="0" nillable="true"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Owner business phone(s) -->
+				<xsd:element name="NK1.6" minOccurs="0" nillable="true" maxOccurs="unbounded">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- Use code: WPN -->
+							<xsd:element name="XTN.2" type="nonNullString"/>
+							<!-- Equipment type: PH Phone -->
+							<xsd:element name="XTN.3" type="nonNullString"/>
+							<!-- Email address -->
+							<xsd:element name="XTN.4" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Area code -->
+							<xsd:element name="XTN.6" type="xsd:int" minOccurs="0" nillable="true"/>
+							<!-- Local number -->
+							<xsd:element name="XTN.7" type="xsd:int" minOccurs="0" nillable="true"/>
+							<!-- Extension -->
+							<xsd:element name="XTN.8" type="xsd:int" minOccurs="0" nillable="true"/>
+							<!-- Unformatted number if not parsable -->
+							<xsd:element name="XTN.12" type="xsd:string" minOccurs="0" nillable="true"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Owner business name -->
+				<xsd:element name="NK1.13" minOccurs="0" nillable="true">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- Business Name -->
+							<xsd:element name="XON.1" type="nonNullString"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Owner primary language -->
+				<xsd:element name="NK1.20" minOccurs="0" nillable="true">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- Code See list of ISO abbreviations in implementation guide -->
+							<xsd:element name="CWE.1" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Text -->
+							<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Code System -->
+							<xsd:element name="CWE.3" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Alt Code -->
+							<xsd:element name="CWE.4" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Alt Text -->
+							<xsd:element name="CWE.5" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Alt Code System -->
+							<xsd:element name="CWE.6" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Original Text -->
+							<xsd:element name="CWE.9" type="xsd:string" minOccurs="0" nillable="true"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<!-- PATIENT has one segment with only a few fields only species is critical here.  Production class is required by may be Unknown -->
+	<xsd:element name="OPU_R25.PATIENT" nillable="true">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="PID">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- Patient Identifier(s) -->
+							<xsd:element name="PID.3" maxOccurs="unbounded">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Identifier (AIN or GIN preferred) -->
+										<xsd:element name="CX.1" type="nonNullString"/>
+										<!-- Assigning Authority -->
+										<xsd:element name="CX.4" minOccurs="0" nillable="true">
+											<xsd:complexType>
+												<xsd:sequence>
+													<!-- Either Text of Assigner here -->
+													<xsd:element name="HD.1" type="xsd:string" minOccurs="0" nillable="true"/>
+													<!-- OR OID of Assigner (preferred) here -->
+													<xsd:element name="HD.2" type="OID" minOccurs="0" nillable="true"/>
+													<!-- If above is an OID, this is "ISO" if text, omit HD.3 -->
+													<xsd:element name="HD.3" type="ISO" minOccurs="0" nillable="true"/>
+												</xsd:sequence>
+											</xsd:complexType>
+										</xsd:element>
+										<!-- Type code for type of ID such as eartag, microchip, etc. -->
+										<xsd:element name="CX.5" type="IDType" minOccurs="0" nillable="true"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<!-- Patient Name: required for HL7 but often not sent for NAHLN -->
+							<xsd:element name="PID.5">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="XPN.1">
+											<xsd:complexType>
+												<xsd:sequence>
+													<!-- Family Name "Not Provided" in most cases or animal name if given -->
+													<xsd:element name="FN.1" type="nonNullString"/>
+												</xsd:sequence>
+											</xsd:complexType>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<!-- Date of birth to as much precision as known YYYYMMDD -->
+							<xsd:element name="PID.7" type="CondDateTime" minOccurs="0" nillable="true"/>
+							<!-- Administrative Sex (F,S,M,C,U, or X See Implementation Guide)-->
+							<xsd:element name="PID.8" minOccurs="0" nillable="true">
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:enumeration value="F"/>
+										<!-- Female -->
+										<xsd:enumeration value="S"/>
+										<!-- Neutered Female -->
+										<xsd:enumeration value="M"/>
+										<!-- Male -->
+										<xsd:enumeration value="C"/>
+										<!-- Neutered Male -->
+										<xsd:enumeration value="U"/>
+										<!-- Gender Unknown -->
+										<xsd:enumeration value="X"/>
+										<!-- Multiple Genders -->
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<!-- Race: Used for color or markings in NAHLN -->
+							<xsd:element name="PID.10" minOccurs="0" maxOccurs="unbounded">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Code -->
+										<xsd:element name="CWE.1" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Text -->
+										<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Code System -->
+										<xsd:element name="CWE.3" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Alt Code -->
+										<xsd:element name="CWE.4" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Alt Text -->
+										<xsd:element name="CWE.5" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Alt Code System -->
+										<xsd:element name="CWE.6" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Original Text -->
+										<xsd:element name="CWE.9" type="xsd:string" minOccurs="0" nillable="true"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<!-- Patient Address -->
+							<xsd:element name="PID.11" minOccurs="0">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Street Address -->
+										<xsd:element name="XAD.1" minOccurs="0" nillable="true">
+											<xsd:complexType>
+												<xsd:sequence>
+													<!-- Street Address -->
+													<xsd:element name="SAD.1" type="nonNullString"/>
+													<!-- Apartment number -->
+													<xsd:element name="SAD.3" type="xsd:string" minOccurs="0" nillable="true"/>
+												</xsd:sequence>
+											</xsd:complexType>
+										</xsd:element>
+										<!-- Other designation -->
+										<xsd:element name="XAD.2" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- City -->
+										<xsd:element name="XAD.3" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- State (Two character abbreviation) -->
+										<xsd:element name="XAD.4" type="StateCode" minOccurs="0" nillable="true"/>
+										<!-- Zipcode -->
+										<xsd:element name="XAD.5" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- GPS Coordinates, Premises ID, etc.  -->
+										<xsd:element name="XAD.8" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- County -->
+										<xsd:element name="XAD.9" type="xsd:string" minOccurs="0" nillable="true"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<!-- Date and time of death to as much precision as known YYYYMMDDHHMM-ZZZZ -->
+							<xsd:element name="PID.29" type="DateTime" minOccurs="0" nillable="true"/>
+							<!-- Patient death indicator: "Y" if death, normally omitted but my be "N" for live prior to testing -->
+							<xsd:element name="PID.30" type="YN" minOccurs="0" nillable="true"/>
+							<!-- Identity unknown indicator: "Y" for John Doe's, normally omitted but may be set to "N" -->
+							<xsd:element name="PID.31" type="YN" minOccurs="0" nillable="true"/>
+							<!-- Taxonomic classification -->
+							<xsd:element name="PID.35" minOccurs="0" nillable="true">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- SNOMED Code -->
+										<xsd:element name="CWE.1" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- SNOMED Preferred Name -->
+										<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- NAHLN Constant "SCT" -->
+										<xsd:element name="CWE.3" type="SCT" minOccurs="0" nillable="true"/>
+										<!-- Alt Code -->
+										<xsd:element name="CWE.4" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Alt Text -->
+										<xsd:element name="CWE.5" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Alt Code System -->
+										<xsd:element name="CWE.6" minOccurs="0" nillable="true">
+											<xsd:simpleType>
+												<xsd:restriction base="xsd:string">
+													<xsd:enumeration value="L"/>
+													<!-- Local Code -->
+													<xsd:enumeration value="NAIS"/>
+													<!-- NAIS Species Code -->
+													<xsd:enumeration value="WS"/>
+													<!-- Wildlife Services Species Code -->
+												</xsd:restriction>
+											</xsd:simpleType>
+										</xsd:element>
+										<!-- Original Text -->
+										<xsd:element name="CWE.9" type="xsd:string" minOccurs="0" nillable="true"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<!-- Strain -->
+							<xsd:element name="PID.37" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Production Class -->
+							<xsd:element name="PID.38" minOccurs="0" nillable="true">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Production Type Code -->
+										<xsd:element name="CWE.1" minOccurs="0" nillable="true">
+											<xsd:simpleType>
+												<xsd:restriction base="xsd:string">
+													<xsd:enumeration value="BR"/>
+													<!-- Breeding/genetic shock -->
+													<xsd:enumeration value="C"/>
+													<!-- Companion -->
+													<xsd:enumeration value="CP"/>
+													<!-- Competition -->
+													<xsd:enumeration value="DA"/>
+													<!-- Dairy -->
+													<xsd:enumeration value="DR"/>
+													<!-- Draft -->
+													<!--<xsd:enumeration value="DU"/>-->
+													<!-- Dual Purpose -->
+													<!--<xsd:enumeration value="EX"/>-->
+													<!-- Exhibition -->
+													<xsd:enumeration value="FB"/>
+													<!-- Fiber -->
+													<xsd:enumeration value="FR"/>
+													<!-- Feral -->
+													<xsd:enumeration value="GM"/>
+													<!-- Game -->
+													<xsd:enumeration value="LY"/>
+													<!-- Layer, including multiplier flocks -->
+													<xsd:enumeration value="MP"/>
+													<!-- Multiple Purpose -->
+													<xsd:enumeration value="MT"/>
+													<!-- Meat -->
+													<!--<xsd:enumeration value="NA"/>-->
+													<!-- Not Applicable -->
+													<!--<xsd:enumeration value="NP"/>-->
+													<!-- Non-Physical Product Production -->
+													<!--<xsd:enumeration value="OR"/>-->
+													<!-- Ornamental -->
+													<!--<xsd:enumeration value="OT"/>-->
+													<!-- Ither -->
+													<!--<xsd:enumeration value="PP"/>-->
+													<!-- Physical Product Production -->
+													<!--<xsd:enumeration value="PL"/>-->
+													<!-- Pleasure -->
+													<!--<xsd:enumeration value="RA"/>-->
+													<!-- Racing -->
+													<xsd:enumeration value="RS"/>
+													<!-- Research -->
+													<!--<xsd:enumeration value="SH"/>-->
+													<!-- Show -->
+													<xsd:enumeration value="SV"/>
+													<!-- Service -->
+													<xsd:enumeration value="U"/>
+													<!-- Unknown -->
+													<xsd:enumeration value="WI"/>
+													<!-- Wildlife -->
+													<xsd:enumeration value="Z"/>
+													<!-- Zoo -->
+												</xsd:restriction>
+											</xsd:simpleType>
+										</xsd:element>
+										<!-- Text -->
+										<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- NAHLN Constant  "HL70429" -->
+										<xsd:element name="CWE.3" minOccurs="0" nillable="true">
+											<xsd:simpleType>
+												<xsd:restriction base="nonNullString">
+													<xsd:enumeration value="HL70429"/>
+												</xsd:restriction>
+											</xsd:simpleType>
+										</xsd:element>
+										<!-- Alt Code -->
+										<xsd:element name="CWE.4" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Alt Text -->
+										<xsd:element name="CWE.5" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Alt Code System -->
+										<xsd:element name="CWE.6" minOccurs="0" nillable="true">
+											<xsd:simpleType>
+												<xsd:restriction base="xsd:string">
+													<xsd:enumeration value="L"/>
+												</xsd:restriction>
+											</xsd:simpleType>
+										</xsd:element>
+										<!-- Original Text -->
+										<xsd:element name="CWE.9" type="xsd:string" minOccurs="0" nillable="true"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Observations on the patient.  If more than one, the entire PATIENT_OBSERVATION group repeats -->
+				<xsd:element name="OPU_R25.PATIENT_OBSERVATION" minOccurs="0" nillable="true" maxOccurs="unbounded">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="OBX" type="PATIENT.OBX"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- END PATIENT -->
+
+	<xsd:complexType name="PATIENT.OBX">
+		<xsd:sequence>
+			<!-- Currently NAHLN constant "NM" but schema supports other value types FUO -->
+			<xsd:element name="OBX.2" type="nonNullString"/>
+			<!-- Observation Identifier -->
+			<xsd:element name="OBX.3">
+				<xsd:complexType>
+					<xsd:sequence>
+						<!-- 09/17/2007 SGL Changed .1, .2 and .3 from CWE to CWE.per 2_1 schema changes requested by MKM -->
+						<!-- Loinc code for observation on patient" -->
+						<xsd:element name="CWE.1" type="nonNullString"/>
+						<!-- Loing short name" -->
+						<xsd:element name="CWE.2" type="nonNullString"/>
+						<!-- NAHLN Constant "LN" -->
+						<xsd:element name="CWE.3" type="LN"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<!-- Observation Value -->
+			<xsd:element name="OBX.5">
+				<!-- Our definition of ANY because this may support various types of observations about the patient -->
+				<!-- mixed="true" allows for ST and NM types -->
+				<xsd:complexType mixed="true">
+					<xsd:sequence>
+						<!-- Comparator: =, <, <=, >, >= -->
+						<xsd:element name="SN.1" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- Number 1 -->
+						<xsd:element name="SN.2" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- Separator: :, -, etc.-->
+						<xsd:element name="SN.3" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- Number 2 -->
+						<xsd:element name="SN.4" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- Code -->
+						<xsd:element name="CWE.1" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- Text -->
+						<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- Code System -->
+						<xsd:element name="CWE.3" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- Alt Code -->
+						<xsd:element name="CWE.4" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- Alt Text -->
+						<xsd:element name="CWE.5" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- Alt Code System -->
+						<xsd:element name="CWE.6" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- Original Text -->
+						<xsd:element name="CWE.9" type="xsd:string" minOccurs="0" nillable="true"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<!-- Units if applicable -->
+			<xsd:element name="OBX.6" minOccurs="0" nillable="true">
+				<xsd:complexType>
+					<xsd:sequence>
+						<!-- Units Code -->
+						<xsd:element name="CWE.1" type="nonNullString"/>
+						<!-- Units Text -->
+						<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- NAHLN constant "ISO" -->
+						<xsd:element name="CWE.3" type="ISO"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<!-- NAHLN Constant "F" Only final results messaged -->
+			<xsd:element name="OBX.11" minOccurs="1">
+				<xsd:simpleType>
+					<xsd:restriction base="nonNullString">
+						<xsd:enumeration value="F"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<xsd:element name="OPU_R25.SPECIMEN">
+		<xsd:complexType>
+			<xsd:sequence>
+				<!-- Specimen Segment -->
+				<xsd:element ref="SPM"/>
+				<!-- Zero or more observations on the specimen each in its own group -->
+				<xsd:element name="OPU_R25.SPECIMEN_OBSERVATION" minOccurs="0" nillable="true" maxOccurs="unbounded">
+					<xsd:complexType>
+						<xsd:sequence>
+							<xsd:element name="OBX" type="SPECIMEN.OBX"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element ref="OPU_R25.ORDER" minOccurs="1" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+	<xsd:element name="SPM">
+		<xsd:complexType>
+			<xsd:sequence>
+				<!-- Specimen Identifier -->
+				<xsd:element name="SPM.2">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- Placer specimen ID -->
+							<xsd:element name="EIP.1" minOccurs="1" nillable="false">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Placer Assigned specimen id for specimen or pool -->
+										<xsd:element name="EI.1" type="nonNullString" minOccurs="0" maxOccurs="1"/>
+										<!-- Text for placer ID system -->
+										<xsd:element name="EI.2" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Or Lab Constant either Lab OID or Lab OID for placer specimen IDs -->
+										<xsd:element name="EI.3" type="OID" minOccurs="0" nillable="true"/>
+										<!-- If above is an OID, "ISO" otherwise omit -->
+										<xsd:element name="EI.4" type="ISO" minOccurs="0" nillable="true"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<!-- Filler (Lab) assigned ID -->
+							<xsd:element name="EIP.2">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Lab Assigned specimen id for specimen or pool -->
+										<xsd:element name="EI.1" type="nonNullString"/>
+										<!-- Lab Constant either Lab OID or Lab OID for specimen IDs -->
+										<xsd:element name="EI.3" type="OID"/>
+										<!-- NAHLN Constant "ISO" -->
+										<xsd:element name="EI.4" type="ISO"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Repeats for each individual specimen in the pool or single instance for sub-sample, alloquot, etc. -->
+				<xsd:element name="SPM.3" minOccurs="0" nillable="true" maxOccurs="unbounded">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- Placer assigned parent specimen ID -->
+							<xsd:element name="EIP.1" minOccurs="0" nillable="true">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Placer Assigned specimen id for specimen -->
+										<xsd:element name="EI.1" type="nonNullString"/>
+										<!-- Text for placer ID system -->
+										<xsd:element name="EI.2" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Or Lab Constant either Lab OID or Lab OID for placer specimen IDs -->
+										<xsd:element name="EI.3" type="OID" minOccurs="0" nillable="true"/>
+										<!-- If above is an OID, "ISO" otherwise omit -->
+										<xsd:element name="EI.4" type="ISO" minOccurs="0" nillable="true"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<!-- Filler (Lab) assigned parent specimen ID -->
+							<xsd:element name="EIP.2" minOccurs="0" nillable="true">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Lab Assigned specimen id for parent specimen -->
+										<xsd:element name="EI.1" type="nonNullString"/>
+										<!-- Lab Constant either Lab OID or Lab OID for specimen IDs -->
+										<xsd:element name="EI.3" type="OID"/>
+										<!-- NAHLN Constant "ISO" -->
+										<xsd:element name="EI.4" type="ISO"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Specimen Type -->
+				<xsd:element name="SPM.4">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- SNOMED code for specimen type-->
+							<xsd:element name="CWE.1" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- SNOMED text for specimen type -->
+							<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- NAHLN Constant "SCT" -->
+							<xsd:element name="CWE.3" type="SCT" minOccurs="0" nillable="true"/>
+							<!-- Alternate code for specimen type-->
+							<xsd:element name="CWE.4" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Alternate text for specimen type -->
+							<xsd:element name="CWE.5" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- "L" for local code in most cases -->
+							<xsd:element name="CWE.6" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Original text -->
+							<xsd:element name="CWE.9" type="xsd:string" minOccurs="0" nillable="true"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Specimen Additives -->
+				<xsd:element name="SPM.6" minOccurs="0" nillable="true" maxOccurs="unbounded">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- SNOMED code for specimen additive-->
+							<xsd:element name="CWE.1" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- SNOMED text for specimen additive -->
+							<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- NAHLN Constant "SCT" -->
+							<xsd:element name="CWE.3" type="SCTor371" minOccurs="0" nillable="true"/>
+							<!-- Alternate code for specimen additive-->
+							<xsd:element name="CWE.4" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Alternate text for specimen additive -->
+							<xsd:element name="CWE.5" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- "L" for local code in most cases -->
+							<xsd:element name="CWE.6" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Original text -->
+							<xsd:element name="CWE.9" type="xsd:string" minOccurs="0" nillable="true"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Specimen Source Site -->
+				<xsd:element name="SPM.8" minOccurs="0" nillable="true">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- SNOMED code for specimen source site-->
+							<xsd:element name="CWE.1" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- SNOMED text for specimen source site -->
+							<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- NAHLN Constant "SCT" -->
+							<xsd:element name="CWE.3" type="SCT" minOccurs="0" nillable="true"/>
+							<!-- Alternate code for specimen source site-->
+							<xsd:element name="CWE.4" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Alternate text for specimen source site -->
+							<xsd:element name="CWE.5" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- "L" for local code in most cases -->
+							<xsd:element name="CWE.6" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Original text -->
+							<xsd:element name="CWE.9" type="xsd:string" minOccurs="0" nillable="true"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Specimen Role: Patient sample, pool, grouped specimen, etc. -->
+				<xsd:element name="SPM.11">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- NAHLN "P" Patient, "L" Pool, "G" Group -->
+							<xsd:element name="CWE.1">
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:enumeration value="P"/>
+										<!-- Patient -->
+										<xsd:enumeration value="L"/>
+										<!-- Pool -->
+										<xsd:enumeration value="G"/>
+										<!-- Group -->
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<!-- NAHLN "Patient", "Pooled", or "Group" -->
+							<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- NAHLN Constant "HL70369" -->
+							<xsd:element name="CWE.3">
+								<xsd:simpleType>
+									<xsd:restriction base="nonNullString">
+										<xsd:enumeration value="HL70369"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Grouped Specimen Count -->
+				<xsd:element name="SPM.13" type="xsd:int" minOccurs="0" nillable="true"/>
+				<!-- Specimen Description -->
+				<xsd:element name="SPM.14" type="xsd:string" minOccurs="0" nillable="true"/>
+				<!-- Specimen Collection Date/Time: If available is the most important date/time for Epi -->
+				<xsd:element name="SPM.17" minOccurs="0" nillable="true">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- Start time used since collection is virtually instantaneous for our samples. YYYYMMDDHHMM-ZZZZ -->
+							<xsd:element name="DR.1" type="DateTime"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Date of specimen received: Used as most consistently available serrogate for collection date.   YYYYMMDD -->
+				<xsd:element name="SPM.18" type="DateTime" nillable="false"/>
+				<!--Added 11-14-2007 Shane Linke-->
+				<!-- Specimen Reject Reason (See Implementation Guide for Codes-->
+				<xsd:element name="SPM.21" minOccurs="0" nillable="true">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- Code for specimen reject reason (see table 0490)-->
+							<xsd:element name="CWE.1" minOccurs="0" nillable="true">
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:enumeration value="EX"/>
+										<!-- Expired -->
+										<xsd:enumeration value="IA"/>
+										<!-- Improper Additive -->
+										<xsd:enumeration value="IC"/>
+										<!-- Improper Container -->
+										<xsd:enumeration value="IH"/>
+										<!-- Improper Handling -->
+										<xsd:enumeration value="IS"/>
+										<!-- Improper Specimen -->
+										<xsd:enumeration value="QS"/>
+										<!-- Quantity Not Sufficient -->
+										<xsd:enumeration value="RA"/>
+										<!-- Missing Patient ID Number -->
+										<xsd:enumeration value="RB"/>
+										<!-- Broken Container -->
+										<xsd:enumeration value="RC"/>
+										<!-- Clotting -->
+										<xsd:enumeration value="RD"/>
+										<!-- Missing Collection Date -->
+										<xsd:enumeration value="RE"/>
+										<!-- Missing Patient Name -->
+										<xsd:enumeration value="RH"/>
+										<!-- Hemolysis -->
+										<xsd:enumeration value="RI"/>
+										<!-- Identification Problem -->
+										<xsd:enumeration value="RM"/>
+										<!-- Labeling -->
+										<xsd:enumeration value="RN"/>
+										<!-- Contamination -->
+										<xsd:enumeration value="RP"/>
+										<!-- Missing Phlebotomist ID -->
+										<xsd:enumeration value="RR"/>
+										<!-- Improper Storage -->
+										<xsd:enumeration value="RS"/>
+										<!-- Name Misspelling -->
+										<xsd:enumeration value="SC"/>
+										<!-- Improper Specimen Condition -->
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<!-- Text for specimen reject reason -->
+							<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- NAHLN Constant "HL70490" -->
+							<xsd:element name="CWE.3">
+								<xsd:simpleType>
+									<xsd:restriction base="nonNullString">
+										<xsd:enumeration value="HL70490"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<!-- Alternate code for specimen reject reason-->
+							<xsd:element name="CWE.4" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Alternate text for specimen reject reason -->
+							<xsd:element name="CWE.5" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- "L" for local code in most cases -->
+							<xsd:element name="CWE.6" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Original text -->
+							<xsd:element name="CWE.9" type="xsd:string" minOccurs="0" nillable="true"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="SPM.22" minOccurs="0" nillable="true">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- Code for specimen quality ( E, G, F, P, see Implementation Guide for Codes)-->
+							<xsd:element name="CWE.1" minOccurs="0" nillable="true">
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:enumeration value="E"/>
+										<!-- Excellent -->
+										<xsd:enumeration value="G"/>
+										<!-- Good -->
+										<xsd:enumeration value="F"/>
+										<!-- Fair -->
+										<xsd:enumeration value="P"/>
+										<!-- Poor -->
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<!-- Text for specimen reject reason -->
+							<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- NAHLN Constant "HL70491" -->
+							<xsd:element name="CWE.3">
+								<xsd:simpleType>
+									<xsd:restriction base="nonNullString">
+										<xsd:enumeration value="HL70491"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<!-- Alternate code for specimen reject reason-->
+							<xsd:element name="CWE.4" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Alternate text for specimen reject reason -->
+							<xsd:element name="CWE.5" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- "L" for local code in most cases -->
+							<xsd:element name="CWE.6" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Original text -->
+							<xsd:element name="CWE.9" type="xsd:string" minOccurs="0" nillable="true"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="SPM.23" minOccurs="0" nillable="true">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- Code for specimen appropriateness ( P, A, I, See Implementation Guide for Codes)-->
+							<xsd:element name="CWE.1" minOccurs="0" nillable="true">
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:enumeration value="P"/>
+										<!-- Preferred -->
+										<xsd:enumeration value="A"/>
+										<!-- Appropriate -->
+										<xsd:enumeration value="I"/>
+										<!-- Inappropriate -->
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<!-- Text for specimen reject reason -->
+							<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- NAHLN Constant "HL70492" -->
+							<xsd:element name="CWE.3">
+								<xsd:simpleType>
+									<xsd:restriction base="nonNullString">
+										<xsd:enumeration value="HL70492"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<!-- Alternate code for specimen reject reason-->
+							<xsd:element name="CWE.4" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Alternate text for specimen reject reason -->
+							<xsd:element name="CWE.5" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- "L" for local code in most cases -->
+							<xsd:element name="CWE.6" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Original text -->
+							<xsd:element name="CWE.9" type="xsd:string" minOccurs="0" nillable="true"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<xsd:element name="SPM.24" minOccurs="0" nillable="true">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- Code for specimen condition ( FROZ, COOL, etc, see Implementation Guide for Codes)-->
+							<xsd:element name="CWE.1" minOccurs="0" nillable="true">
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:enumeration value="AUT"/>
+										<!-- Autolyzed -->
+										<xsd:enumeration value="CLOT"/>
+										<!-- Clotted -->
+										<xsd:enumeration value="CON"/>
+										<!-- Contaminated -->
+										<xsd:enumeration value="COOL"/>
+										<!-- Cool -->
+										<xsd:enumeration value="FROZ"/>
+										<!-- Frozen -->
+										<xsd:enumeration value="HEM"/>
+										<!-- Hemolyzed -->
+										<xsd:enumeration value="LIVE"/>
+										<!-- Live -->
+										<xsd:enumeration value="ROOM"/>
+										<!-- Room Temperature -->
+										<xsd:enumeration value="SNR"/>
+										<!-- Sample Not Received -->
+										<xsd:enumeration value="WRM"/>
+										<!-- Warm -->
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<!-- Text for specimen reject reason -->
+							<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- NAHLN Constant "HL70493" -->
+							<xsd:element name="CWE.3">
+								<xsd:simpleType>
+									<xsd:restriction base="nonNullString">
+										<xsd:enumeration value="HL70493"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<!-- Alternate code for specimen reject reason-->
+							<xsd:element name="CWE.4" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Alternate text for specimen reject reason -->
+							<xsd:element name="CWE.5" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- "L" for local code in most cases -->
+							<xsd:element name="CWE.6" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Original text -->
+							<xsd:element name="CWE.9" type="xsd:string" minOccurs="0" nillable="true"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Number of Specimen Containers -->
+				<xsd:element name="SPM.26" type="xsd:int" minOccurs="0" nillable="true"/>
+				<!-- Container Type -->
+				<xsd:element name="SPM.27" minOccurs="0" nillable="true">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- SNOMED code for container type once available -->
+							<xsd:element name="CWE.1" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- SNOMED text for container type -->
+							<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- NAHLN Constant "SCT" -->
+							<xsd:element name="CWE.3" type="SCT" minOccurs="0" nillable="true"/>
+							<!-- Alternate code for container type (If local system codes container types, include in 4-6) -->
+							<xsd:element name="CWE.4" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Alternate text for container type -->
+							<xsd:element name="CWE.5" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- "L" for local code in most cases -->
+							<xsd:element name="CWE.6" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Original text (only component used for now) -->
+							<xsd:element name="CWE.9" type="xsd:string" minOccurs="0" nillable="true"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Container Condition -->
+				<xsd:element name="SPM.28" minOccurs="0" nillable="true">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- SNOMED code for container condition once available -->
+							<xsd:element name="CWE.1" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- SNOMED text for container condition -->
+							<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- NAHLN Constant "SCT" -->
+							<xsd:element name="CWE.3" type="SCT" minOccurs="0" nillable="true"/>
+							<!-- Alternate code for container condition (If local system codes container conditions, include in 4-6) -->
+							<xsd:element name="CWE.4" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Alternate text for container condition -->
+							<xsd:element name="CWE.5" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- "L" for local code in most cases -->
+							<xsd:element name="CWE.6" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Original text (only component used for now) -->
+							<xsd:element name="CWE.9" type="xsd:string" minOccurs="0" nillable="true"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- END SPM -->
+
+	<xsd:complexType name="SPECIMEN.OBX">
+		<xsd:sequence>
+			<!-- NAHLN constant "NM" But may vary in other uses. -->
+			<xsd:element name="OBX.2" type="nonNullString"/>
+			<xsd:element name="OBX.3">
+				<xsd:complexType>
+					<xsd:sequence>
+						<!-- 09/17/2007 SGL Changed .1, .2 and .3 from CWE to CWE.per 2_1 schema changes requested by MKM -->
+						<!-- NAHLN Constant "42186-7" -->
+						<xsd:element name="CWE.1" type="nonNullString"/>
+						<!-- NAHLN Constant "Number Spec Recd XXX Qn" -->
+						<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- NAHLN Constant "LN" -->
+						<xsd:element name="CWE.3" type="LN"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<!-- Value of observation on Specimen Value -->
+			<xsd:element name="OBX.5" minOccurs="0" nillable="true">
+				<!-- Our definition of ANY because this may support various types of observations -->
+				<!-- mixed="true" allows for ST and NM types -->
+				<xsd:complexType mixed="true">
+					<xsd:sequence>
+						<!-- Comparator: =, <, <=, >, >= -->
+						<xsd:element name="SN.1" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- Number 1 -->
+						<xsd:element name="SN.2" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- Separator: :, -, etc.-->
+						<xsd:element name="SN.3" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- Number 2 -->
+						<xsd:element name="SN.4" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- Code -->
+						<xsd:element name="CWE.1" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- Text -->
+						<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- Code System -->
+						<xsd:element name="CWE.3" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- Alt Code -->
+						<xsd:element name="CWE.4" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- Alt Text -->
+						<xsd:element name="CWE.5" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- Alt Code System -->
+						<xsd:element name="CWE.6" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- Original Text -->
+						<xsd:element name="CWE.9" type="xsd:string" minOccurs="0" nillable="true"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<!-- Units if applicable -->
+			<xsd:element name="OBX.6" minOccurs="0" nillable="true">
+				<xsd:complexType>
+					<xsd:sequence>
+						<!-- Units Code -->
+						<xsd:element name="CWE.1" type="nonNullString"/>
+						<!-- Units Text -->
+						<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+						<!-- NAHLN constant "ISO" -->
+						<xsd:element name="CWE.3" type="ISO"/>
+					</xsd:sequence>
+				</xsd:complexType>
+			</xsd:element>
+			<!-- NAHLN Constant "F" Only final results messaged -->
+			<xsd:element name="OBX.11">
+				<xsd:simpleType>
+					<xsd:restriction base="nonNullString">
+						<xsd:enumeration value="F"/>
+					</xsd:restriction>
+				</xsd:simpleType>
+			</xsd:element>
+		</xsd:sequence>
+	</xsd:complexType>
+
+	<!-- Each order on the same specimen forms a repeat of this group. -->
+	<xsd:element name="OPU_R25.ORDER" nillable="false">
+		<xsd:complexType>
+			<xsd:sequence>
+				<!-- General order information -->
+				<xsd:element name="OBR">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- Placer Order Number -->
+							<xsd:element name="OBR.2" minOccurs="0" nillable="true">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Order number as received from field -->
+										<xsd:element name="EI.1" type="nonNullString" minOccurs="1"/>
+										<!-- Either text of placer order number system -->
+										<xsd:element name="EI.2" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Or OID for placer order number system -->
+										<xsd:element name="EI.3" type="OID" minOccurs="0" nillable="true"/>
+										<!-- If OID, this is "ISO" otherwise omitted -->
+										<xsd:element name="EI.4" type="ISO" minOccurs="0" nillable="true"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<!-- Filler (Lab) Order Number -->
+							<xsd:element name="OBR.3">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Lab assigned order number -->
+										<xsd:element name="EI.1" type="nonNullString"/>
+										<!-- Lab Constant Lab OID or Lab's OID for Order Numbers -->
+										<xsd:element name="EI.3" type="OID"/>
+										<!-- NAHLN Constant "ISO" -->
+										<xsd:element name="EI.4" type="ISO"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<!-- Order Service Identifier -->
+							<xsd:element name="OBR.4">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Loinc code for order if one exists -->
+										<xsd:element name="CWE.1" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Loinc short name -->
+										<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- NAHLN Constant "LN" -->
+										<xsd:element name="CWE.3" type="LN" minOccurs="0" nillable="true"/>
+										<!-- Alternate code for order such as local or NAHLN-defined battery code -->
+										<xsd:element name="CWE.4" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Alternate text for order -->
+										<xsd:element name="CWE.5" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- "L" for local code in most cases -->
+										<xsd:element name="CWE.6" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Original text  -->
+										<xsd:element name="CWE.9" type="xsd:string" minOccurs="0" nillable="true"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<!-- Date/Time report released YYYYMMDDHHMMSS-ZZZZ -->
+							<xsd:element name="OBR.22" type="DateTime"/>
+							<!-- Parent Order Number: If this order is a reflex order from an identified parent order this is used to link them. -->
+							<xsd:element name="OBR.29" minOccurs="0" nillable="true">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Filler Order Number -->
+										<xsd:element name="EIP.2">
+											<xsd:complexType>
+												<xsd:sequence>
+													<!-- Lab assigned parent order number -->
+													<xsd:element name="EI.1" type="nonNullString"/>
+													<!-- Lab Constant Lab OID or Lab's OID for Order Numbers -->
+													<xsd:element name="EI.3" type="OID"/>
+													<!-- NAHLN Constant "ISO" -->
+													<xsd:element name="EI.4" type="ISO"/>
+												</xsd:sequence>
+											</xsd:complexType>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<!-- Reason for study.  Will probably replace CTI and OBX on visit at some point! -->
+							<xsd:element name="OBR.31" minOccurs="0" maxOccurs="unbounded">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Code for Reason for Study (Specfic testing program) -->
+										<xsd:element name="CWE.1" type="xsd:string" minOccurs="0"/>
+										<!-- Test name of program -->
+										<xsd:element name="CWE.2" type="xsd:string" minOccurs="0"/>
+										<!-- "L" for local code -->
+										<xsd:element name="CWE.3" type="Local" minOccurs="0"/>
+										<!-- Local code -->
+										<xsd:element name="CWE.4" type="xsd:string" minOccurs="0"/>
+										<!-- Local Text: -->
+										<xsd:element name="CWE.5" type="xsd:string" minOccurs="0"/>
+										<!-- NAHLN Constant "L" -->
+										<xsd:element name="CWE.6" type="xsd:string" minOccurs="0"/>
+										<!-- Original text  -->
+										<xsd:element name="CWE.9" type="xsd:string" minOccurs="0"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!-- Some additional order information (Once was Common to a set of orders, thus the name Order Common or ORC) -->
+				<xsd:element name="ORC" minOccurs="0" nillable="false">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- NAHLN constant (for new orders at least)  "NW" 
+								This field is more complicated than it looks.  The first electronic message with this order
+								should be flagged NW for new.  Subsequent messages will be SC for status change.
+								When sending results for which there is no corresponding electronic order message,
+								this field is NW.  If responding to an electronic order (still call "unsolicited in HL7-speak)
+								this will be SC.							-->
+							<xsd:element name="ORC.1">
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:enumeration value="SC"/>
+										<xsd:enumeration value="NW"/>
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<!-- Placer Group Number: Used for referral numbers, etc. -->
+							<xsd:element name="ORC.4" minOccurs="0" nillable="true">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Referral Number -->
+										<xsd:element name="EI.1" type="nonNullString"/>
+
+										<!-- Referral Number Assigner OID
+											As a workable default for now assume all referral numbers
+											have been issued by the NAHLN so the OID is 
+											2.16.840.1.113883.3.5.1.8  -->
+										<xsd:element name="EI.3" type="OID"/>
+										<!-- NAHLN Constant "ISO" -->
+										<xsd:element name="EI.4" type="ISO"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<!-- NAHLN Constant "CM" Currently only complete orders are transmitted -->
+							<xsd:element name="ORC.5" minOccurs="1" nillable="false">
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:enumeration value="A"/>
+										<!-- Some, but not all, results available -->
+										<!--<xsd:enumeration value="CA"/>-->
+										<!-- Order was canceled -->
+										<xsd:enumeration value="CM"/>
+										<!-- Order is complete -->
+										<!--<xsd:enumeration value="DC"/>-->
+										<!-- Order was discontinued -->
+										<!--<xsd:enumeration value="ER"/>-->
+										<!-- Error, order not found -->
+										<!--<xsd:enumeration value="HD"/>-->
+										<!-- Order is on hold -->
+										<!--<xsd:enumeration value="IP"/>-->
+										<!-- In process, unspecified -->
+										<!--<xsd:enumeration value="RP"/>-->
+										<!-- In process, been replaced -->
+										<!--<xsd:enumeration value="SC"/>-->
+										<!-- In process, scheduled -->
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<!-- Date/Time of transaction YYYYMMDDHHMMSS 
+								Ideally reflects the time the results were available to send, not the time sent
+								System time stamp will work -->
+							<xsd:element name="ORC.9" type="DateTime" minOccurs="0" nillable="true"/>
+							<!--Added 11-14-2007 Shane Linke-->
+							<!-- Order entered by 
+							Not currently used but supported for future use especially with round trip orders.
+							Either ID or Name must be provided. -->
+							<xsd:element name="ORC.10" minOccurs="0" nillable="true">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Identifier of order entry person -->
+										<xsd:element name="XCN.1" type="xsd:string" minOccurs="0" nillable="true"/>
+										<xsd:element name="XCN.2" minOccurs="0" nillable="true">
+											<xsd:complexType>
+												<xsd:sequence>
+													<!-- Last Name -->
+													<xsd:element name="FN.1" type="nonNullString"/>
+												</xsd:sequence>
+											</xsd:complexType>
+										</xsd:element>
+										<!-- First Name of enterer -->
+										<xsd:element name="XCN.3" type="xsd:string" minOccurs="0"/>
+										<!-- Middle Name of enterer -->
+										<xsd:element name="XCN.4" type="xsd:string" minOccurs="0"/>
+										<!-- Name suffix (sr. jr. etc.) of enterer -->
+										<xsd:element name="XCN.5" type="xsd:string" minOccurs="0"/>
+										<!--Assigning authority of ID in XCN.1 -->
+										<xsd:element name="XCN.9" minOccurs="0" nillable="true">
+											<xsd:complexType>
+												<xsd:sequence>
+													<!-- Lab's OID or OID of Lab's Employee number system -->
+													<xsd:element name="HD.2" type="OID"/>
+													<!-- NAHLN Constant "ISO" -->
+													<xsd:element name="HD.3" type="ISO"/>
+												</xsd:sequence>
+											</xsd:complexType>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<!-- Verified By
+								Not currently used but supported for future use especially with round trip orders.
+								Either ID or Name must be provided.
+							-->
+							<xsd:element name="ORC.11" minOccurs="0" nillable="true">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Identifier of order verifier -->
+										<xsd:element name="XCN.1" type="xsd:string" minOccurs="0"/>
+										<xsd:element name="XCN.2" minOccurs="0" nillable="true">
+											<xsd:complexType>
+												<xsd:sequence>
+													<!-- Last Name -->
+													<xsd:element name="FN.1" type="nonNullString"/>
+												</xsd:sequence>
+											</xsd:complexType>
+										</xsd:element>
+										<!-- First Name of verifier -->
+										<xsd:element name="XCN.3" type="xsd:string" minOccurs="0"/>
+										<!-- Middle Name of verifier -->
+										<xsd:element name="XCN.4" type="xsd:string" minOccurs="0"/>
+										<!-- Name suffix (sr. jr. etc.) of verifier -->
+										<xsd:element name="XCN.5" type="xsd:string" minOccurs="0"/>
+										<!--Assigning authority of ID in XCN.1 -->
+										<xsd:element name="XCN.9" minOccurs="0" nillable="true">
+											<xsd:complexType>
+												<xsd:sequence>
+													<!-- Lab's OID or OID of Lab's Employee number system -->
+													<xsd:element name="HD.2" type="OID"/>
+													<!-- NAHLN Constant "ISO" -->
+													<xsd:element name="HD.3" type="ISO"/>
+												</xsd:sequence>
+											</xsd:complexType>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+				<!--4/29/2008 Slinke. Changed to allow repeating result segment.-->
+				<xsd:element ref="OPU_R25.RESULT" maxOccurs="unbounded"/>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- END ORDER Group -->
+
+	<xsd:element name="OPU_R25.RESULT">
+		<xsd:complexType>
+			<xsd:sequence>
+				<xsd:element name="OBX">
+					<xsd:complexType>
+						<xsd:sequence>
+							<!-- OBX.2 is not present only if OBX.11 is valued X -->
+							<xsd:element name="OBX.2" minOccurs="0" nillable="true">
+								<!-- Result type code CWE. CWE, NM, SN, ST -->
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:enumeration value="CWE"/>
+										<!-- Coded With Exceptions -->
+										<xsd:enumeration value="NM"/>
+										<!-- Numeric -->
+										<xsd:enumeration value="SN"/>
+										<!-- Structured Numeric -->
+										<xsd:enumeration value="ST"/>
+										<!-- String -->
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<xsd:element name="OBX.3">
+								<xsd:complexType>
+									<xsd:sequence>
+										<xsd:element name="CWE.1" type="nonNullString"/>
+										<!-- Loinc code of result -->
+										<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Loinc short name -->
+										<xsd:element name="CWE.3" type="LN"/>
+										<!-- NAHLN Constant "LN" -->
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<!-- Observation subID: For future use.  Will be used if multiple observations must be
+								related to one another in specific ways.  -->
+							<xsd:element name="OBX.4" type="xsd:string" minOccurs="0" nillable="true"/>
+							<!-- Actual Test Result Value -->
+							<xsd:element name="OBX.5" minOccurs="0" nillable="true">
+								<!-- Our definition of ANY because this may support various types of observations -->
+								<!-- mixed="true" allows for ST and NM types -->
+								<xsd:complexType mixed="true">
+									<xsd:sequence>
+										<!-- Comparator: =, <, <=, >, >= -->
+										<xsd:element name="SN.1" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Number 1 -->
+										<xsd:element name="SN.2" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Separator: :, -, etc.-->
+										<xsd:element name="SN.3" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Number 2 -->
+										<xsd:element name="SN.4" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Code -->
+										<xsd:element name="CWE.1" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Text -->
+										<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Code System -->
+										<xsd:element name="CWE.3" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Alt Code -->
+										<xsd:element name="CWE.4" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Alt Text -->
+										<xsd:element name="CWE.5" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Alt Code System -->
+										<xsd:element name="CWE.6" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Original Text -->
+										<xsd:element name="CWE.9" type="xsd:string" minOccurs="0" nillable="true"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<!-- Units if applicable -->
+							<xsd:element name="OBX.6" minOccurs="0" nillable="true">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Units Code -->
+										<xsd:element name="CWE.1" type="nonNullString"/>
+										<!-- Units Text -->
+										<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- NAHLN constant "ISO" -->
+										<xsd:element name="CWE.3" type="ISO"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<!-- Abnormal Flags: Interpretation (See Implementation Guide for Codes) -->
+							<xsd:element name="OBX.8" type="xsd:string" minOccurs="0" nillable="true" maxOccurs="1"/>
+							<!-- NAHLN Constant "F" Only final results messaged -->
+							<xsd:element name="OBX.11">
+								<!-- Slinke 11/27/07, Added enum values to support Spec Rct Rsns -->
+								<xsd:simpleType>
+									<xsd:restriction base="xsd:string">
+										<xsd:enumeration value="F"/>
+										<!-- Final Result -->
+										<xsd:enumeration value="X"/>
+										<!-- Specimen Rejected, No Result -->
+									</xsd:restriction>
+								</xsd:simpleType>
+							</xsd:element>
+							<!-- Date/Time of observation YYYYMMDDHHMMSS-ZZZZ 
+								This represents the physiologically significant time of the observation which for lab tests equals the 
+								specimen collection date/time and is therefore redundant.	-->
+							<xsd:element name="OBX.14" type="DateTime" minOccurs="0" nillable="true"/>
+							<!-- Responsible Observer(s) Will represent the proficiency tested technician who performed the test-->
+							<xsd:element name="OBX.16" minOccurs="0" nillable="true" maxOccurs="unbounded">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Lab's identifier for the observer -->
+										<xsd:element name="XCN.1" type="xsd:string" minOccurs="0" nillable="true"/>
+										<xsd:element name="XCN.2">
+											<xsd:complexType>
+												<xsd:sequence>
+													<!-- Last name of observer  -->
+													<xsd:element name="FN.1" type="nonNullString"/>
+												</xsd:sequence>
+											</xsd:complexType>
+										</xsd:element>
+										<!-- First Name of observer  -->
+										<xsd:element name="XCN.3" type="xsd:string" minOccurs="0"/>
+										<!-- Middle Name of observer  -->
+										<xsd:element name="XCN.4" type="xsd:string" minOccurs="0"/>
+										<!-- Name suffix (sr. jr. etc.) of observer  -->
+										<xsd:element name="XCN.5" type="xsd:string" minOccurs="0"/>
+										<!--Assigning authority of ID in XCN.1 -->
+										<xsd:element name="XCN.9" minOccurs="0" nillable="true">
+											<xsd:complexType>
+												<xsd:sequence>
+													<!-- Lab's OID or OID of Lab's employee number system -->
+													<xsd:element name="HD.2" type="OID"/>
+													<!-- NAHLN Constant "ISO" -->
+													<xsd:element name="HD.3" type="ISO"/>
+												</xsd:sequence>
+											</xsd:complexType>
+										</xsd:element>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<!-- Method: Identifies specific NAHLN method version or for future use, local method -->
+							<xsd:element name="OBX.17" minOccurs="0" nillable="true">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- OID for method -->
+										<xsd:element name="CWE.1" type="OID" minOccurs="0" nillable="true"/>
+										<!-- Text for method -->
+										<xsd:element name="CWE.2" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- NAHLN Constant "ISO" -->
+										<xsd:element name="CWE.3" type="ISO" minOccurs="0" nillable="true"/>
+										<!-- Alternate code for method -->
+										<xsd:element name="CWE.4" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Alternate text for method -->
+										<xsd:element name="CWE.5" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- "L" for local code in most cases -->
+										<xsd:element name="CWE.6" type="xsd:string" minOccurs="0" nillable="true"/>
+										<!-- Original text -->
+										<xsd:element name="CWE.9" type="xsd:string" minOccurs="0" nillable="true"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<!-- Equipment Instance Identifier: IDs specific machine(s) used. -->
+							<xsd:element name="OBX.18" minOccurs="0" nillable="true" maxOccurs="unbounded">
+								<xsd:complexType>
+									<xsd:sequence>
+										<!-- Equipment Instance ID -->
+										<xsd:element name="EI.1" type="nonNullString"/>
+										<!-- Equipment Instance ID OID-->
+										<xsd:element name="EI.3" type="OID"/>
+										<!-- NAHLN Constant "ISO" -->
+										<xsd:element name="EI.4" type="ISO"/>
+									</xsd:sequence>
+								</xsd:complexType>
+							</xsd:element>
+							<!-- Date/Time of analysis (when test was set up) YYYYMMDDHHMMSS-ZZZZ -->
+							<xsd:element name="OBX.19" minOccurs="0" type="CondDateTime"/>
+						</xsd:sequence>
+					</xsd:complexType>
+				</xsd:element>
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	<!-- END RESULT Group (OBX Segment) -->
+</xsd:schema>
